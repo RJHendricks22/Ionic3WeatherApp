@@ -13,7 +13,7 @@ export class WeatherProvider {
   }
 
   getWeather(city, state){
-    return ( this.http.get(`${this.url}/${state}/${city}.json`));
+    return (this.http.get(`${this.url}/${state}/${city}.json`));
   }
 
 }

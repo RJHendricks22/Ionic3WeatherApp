@@ -13,14 +13,14 @@ export class HomePage {
     city: string;
     state: string;
   }
- 
+
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     private weatherProvider: WeatherProvider,
     private storage: Storage) {
 
   }
- 
+
   ionViewWillEnter(){
     this.storage.get('location').then((val) => {
       if(val != null){
@@ -31,14 +31,11 @@ export class HomePage {
           state: 'FL'
         }
       }
-      
+
     this.weatherProvider.getWeather(this.location.city, this.location.state).subscribe(weather => {
       this.weather = weather.current_observation;
     })
     });
-    
-    
-    
-    
+
   }
 }
