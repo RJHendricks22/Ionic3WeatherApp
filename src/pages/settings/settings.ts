@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { HomePage } from '../home/home';
+import { LOCALE_DATA } from '@angular/common/src/i18n/locale_data';
 
 /**
  * Generated class for the SettingsPage page.
@@ -18,12 +19,16 @@ import { HomePage } from '../home/home';
 export class SettingsPage {
   city: string;
   state: string;
-  recent: [{}];
+  recent: Array<object>;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage) {
+    // this.storage.get('recent');
+    this.storage.set('recent', JSON.stringify([
+      {city: "Miami", state: "FL"}
+    ]));
     this.storage.get('location').then((val) => {
       if (val != null){
         let location = JSON.parse(val);
@@ -33,17 +38,17 @@ export class SettingsPage {
         this.city = 'New York';
         this.state = 'NY';
       }
-    })
-    this.storage.get('recent').then((val) => {
-      if (val != null){
-        let recent = JSON.parse(val);
-      }
-    })
-    this.recent = [{city:"New York",state:"NY"},{city:"Boston",state:"MA"},{city:"Miami",state:"FL"}]
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
+  }
+
+  ionViewDidEnter(){
+    this.storage.get('recent').then((val) =>{
+      this.recent = JSON.parse(val);
+    })
   }
 
   saveForm(){
@@ -52,17 +57,42 @@ export class SettingsPage {
       state: this.state
     }
     this.storage.set('location', JSON.stringify(location))
+    // this.storage.set('recent', JSON.stringify(
+    //   this.storage.get('recent').then(function(val){
+    //     let recent:[object]
+    //     recent = JSON.parse(val)
+    //     console.log(recent)
+    //     recent.push(location)
+    //     console.log(recent)
+    //     return recent
+    //   })
+    // ))
+    // this.storage.get('recent').then((val) => console.log(val))
     this.navCtrl.push(HomePage)
   }
 
-  logButtonEvent(e){
+  logButtonEvent(e, city, state){
     let location = {
-      city: JSON.parse(e.target.value).city,
-      state: JSON.parse(e.target.value).state
+      city: city,
+      state: state
     }
     this.storage.set('location', JSON.stringify(location))
+    // this.storage.set('recent', JSON.stringify([location]))
     this.navCtrl.push(HomePage)
   }
 
+  testOutput(e, city, state){
+    console.log(city, state)
+  }
 
+  // addToRecents(){
+  //   let location = {
+  //     city: "Boston",
+  //     state: "MA"
+  //   }
+  //   this.storage.get('recent').then(function(val){
+  //     let recent = JSON.parse(val)
+  //     recent.push(location)
+  //   })
+  // }
 }
