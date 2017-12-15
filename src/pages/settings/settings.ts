@@ -18,6 +18,7 @@ import { HomePage } from '../home/home';
 export class SettingsPage {
   city: string;
   state: string;
+  recent: [{}];
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +34,12 @@ export class SettingsPage {
         this.state = 'NY';
       }
     })
+    this.storage.get('recent').then((val) => {
+      if (val != null){
+        let recent = JSON.parse(val);
+      }
+    })
+    this.recent = [{city:"New York",state:"NY"},{city:"Boston",state:"MA"},{city:"Miami",state:"FL"}]
   }
 
   ionViewDidLoad() {
@@ -47,5 +54,15 @@ export class SettingsPage {
     this.storage.set('location', JSON.stringify(location))
     this.navCtrl.push(HomePage)
   }
+
+  logButtonEvent(e){
+    let location = {
+      city: JSON.parse(e.target.value).city,
+      state: JSON.parse(e.target.value).state
+    }
+    this.storage.set('location', JSON.stringify(location))
+    this.navCtrl.push(HomePage)
+  }
+
 
 }

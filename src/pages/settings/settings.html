@@ -31,8 +31,20 @@
               </ion-label>
               <ion-input [(ngModel)]="state" name="state" type="text"></ion-input>
             </ion-item>
-            <button ion-button type="submit" block>Save Changes</button>
+            <button ion-button type="submit" block value="saved">Save Changes</button>
           </form>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-50>
+        <ion-list>
+          <h1>Recent Places:</h1>
+          <ion-list *ngFor="let loc of recent">
+            <button class="recentButtons" value='{"city":"{{loc.city}}","state":"{{loc.state}}"}' (click)="logButtonEvent($event)">{{loc.city}}, {{loc.state}}</button>
+          </ion-list>
         </ion-list>
       </ion-col>
     </ion-row>
